@@ -7,7 +7,10 @@ const client = new Twitter(ConfigFile.twitter);
 client.stream('user', function(stream) {
     stream.on('favorite', function(event) {
         client.get('statuses/show/'+event.target_object.id_str, function(error, tweets, response) {
-            if(!!tweets && !!tweets.extended_entities){
+            if(!tweets){
+                return;
+            }
+            if(!!tweets.extended_entities){
                 //メディアの処理
                 tweets.extended_entities.media.forEach((media) => {
                     downloadFile(media);
