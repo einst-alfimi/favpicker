@@ -21,11 +21,12 @@ ev.on('connect',() => {
                     //メディアの処理
                     tweets.extended_entities.media.forEach((media) => {
                         downloadFile(media);
+                        console.log(new Date(),'save image. tweetid:'+tweets.id_str);
                     });
-    
                 }else if(!!tweets.entities.media){
                     //メディアの処理
                     downloadFile(tweets.entities.media);
+                    console.log(new Date(),'save image. tweetid:'+tweets.id_str);                    
                 };
             });
         });
@@ -48,7 +49,7 @@ function downloadFile(media){
         res.pipe(outFile);
         res.on('end', function () {
             outFile.close();
-            console.log(new Date(),'save image. tweetid:'+tweets.id_str);            
+            
         }); 
     });
 }
