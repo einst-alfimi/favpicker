@@ -10,6 +10,7 @@ const ConfigFile = require('config');
 const client = new Twitter(ConfigFile.twitter);
 const ev = new EventEmitter;
 ev.on('connect',() => {
+    console.log(new Date(),'connected.');
     client.stream('user', function(stream) {
         stream.on('favorite', function(event) {
             client.get('statuses/show/'+event.target_object.id_str, function(error, tweets, response) {
@@ -20,17 +21,16 @@ ev.on('connect',() => {
                     //メディアの処理
                     tweets.extended_entities.media.forEach((media) => {
                         downloadFile(media);
-                        console.log('save images. tweetid:'+tweets.id_str);
                     });
     
                 }else if(!!tweets.entities.media){
                     //メディアの処理
                     downloadFile(tweets.entities.media);
-                    console.log('save image. tweetid:'+tweets.id_str);
                 };
             });
         });
         stream.on('error', function(error) {
+            console.warn(new Date(),'cought error ;_;')
             console.error(error);
             setTimeout(function () {
                 ev.emit('connect');
@@ -48,6 +48,7 @@ function downloadFile(media){
         res.pipe(outFile);
         res.on('end', function () {
             outFile.close();
+            console.log(new Date(),'save image. tweetid:'+tweets.id_str);            
         }); 
     });
 }
