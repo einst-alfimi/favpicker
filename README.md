@@ -1,5 +1,7 @@
 twitterのfavした画像を保存するやつ
 
+__StreamAPIが終了したので、2019年以降動きません。__
+
 - install
 
 ```sh
